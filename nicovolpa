@@ -1,0 +1,37 @@
+import random # importo libreria para crear numeros aleatorios
+value=[1, 2, 3]
+weights=[0.5, 0.3, 0.2]
+def weighted_random(values, weights): # Creo la funcion
+    total_weight = sum(weights) # Suma todos los pesos
+    acum_weights = [w / total_weight for w in weights] # Genera las proporciones de cada peso sobre el total
+    # for i in range(len(weights)):
+        #acum_weights[i] += acum_weights[i] esto no acumula bien. la correcion esta abajo
+    for i in range(1,len(weights)): 
+        acum_weights[i] += acum_weights[i-1] # Genero las proporciones correctamente. Arranca a partir del segundo item ya que al primero no hace falta sumarle nada.
+    rand = random.random() # Genero un nuevo  aletorio entre 0 y 1 con distribucion uniforme (misma probabilidad para cada valor)
+    for value, weight in zip(values, acum_weights): # Genera tuplas a partir de los elementos de dos o mas listas
+                                                    # luego las recorre y va corroborando la condicion. Empieza con el primer valor y peso si el peso es mayor devuelve el valor si no sigue buscando.
+                                                    #una vez que cumple  devuelve el valor correspondinete a ese peso.
+        if weight > rand:
+            return value  # Lo que devuelve la funcion creada.
+weighted_random([1, 2, 3],[0.5, 0.3, 0.2]) #Llamo a la funcion con dos varibles de entrada (valores y peso) y veo el valor que devuelve.
+
+
+##Con estas sentencias podes ver las probabilidades de ocurrencia para cada valor segun el peso
+valores=[]
+while len(valores)<1000:
+    valores.append(weighted_random([1, 2, 3],[0.5, 0.3, 0.2]))#Genera 1000 devoluciones de la funcion y las coloca en una lista
+
+a1=0  # Inicio un contador
+a2=0
+a3=0
+for i in valores: # Este loop cuenta cuantas veces se repite cada valor
+    if i==1:
+        a1 +=1
+    if i==2:
+        a2+=1
+    if i==3:
+        a3+=1
+Proba1=a1/1000 #Por ultimo saco las probabilidades de ocurrencia que deberian coincidir con el peso de cada valor
+Proba2=a2/1000
+Proba3=a3/1000     
